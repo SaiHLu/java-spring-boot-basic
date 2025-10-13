@@ -1,0 +1,129 @@
+package com.shl.store.services;
+
+import org.springframework.stereotype.Service;
+
+import com.shl.store.entities.Address;
+import com.shl.store.entities.Category;
+import com.shl.store.entities.Product;
+import com.shl.store.entities.User;
+import com.shl.store.repositories.AddressRepository;
+import com.shl.store.repositories.CategoryRepository;
+import com.shl.store.repositories.ProductRepository;
+import com.shl.store.repositories.ProfileRepository;
+import com.shl.store.repositories.UserRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+    private final EntityManager entityManager;
+    private final ProfileRepository profileRepository;
+    private final AddressRepository addressRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+
+    @Transactional // Ensure this method runs within a transaction
+    public void showEntityStates() {
+        var user = User.builder()
+                .name("Alice Smith")
+                .email("alice.smith@example.com")
+                .password("anothersecurepassword")
+                .build();
+
+        if (entityManager.contains(user)) {
+            System.out.println("User is in a managed state.");
+        } else {
+            System.out.println("User is in a transient/detached state.");
+        }
+
+        this.userRepository.save(user);
+        if (entityManager.contains(user)) {
+            System.out.println("User is in a managed state.");
+        } else {
+            System.out.println("User is in a transient/detached state.");
+        }
+    }
+
+    @Transactional
+    public void showRelatedEntities() {
+        var profile = this.profileRepository.findById(1L).orElseThrow();
+        System.out.println(profile.getUser().getEmail());
+    }
+
+    @Transactional
+    public void findAddress() {
+        var address = this.addressRepository.findById(1L).orElseThrow();
+        System.out.println(address.getState());
+    }
+
+    public void persistRelated() {
+        var user = User.builder()
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .password("securepassword")
+                .build();
+
+        var address = Address.builder()
+                .street("123 Main St")
+                .city("Springfield")
+                .state("IL")
+                .zip("62701")
+                .build();
+
+        user.addAddress(address);
+
+        this.userRepository.save(user);
+    }
+
+    public void deleteRelated() {
+        this.userRepository.deleteById(1L);
+    }
+
+    @Transactional
+    public void deleteAddress() {
+        var user = this.userRepository.findById(8L).orElseThrow();
+        var address = user.getAddresses().getFirst();
+        user.removeAddress(address);
+        this.userRepository.save(user);
+    }
+
+    @Transactional
+    public void manageProducts() {
+        /** Create and save a new category and product */
+        // var category = Category.builder()
+        // .name("Sample Category")
+        // .build();
+
+        // var product = Product.builder()
+        // .name("Sample Product")
+        // .price(19.99)
+        // .category(category)
+        // .build();
+
+        // this.productRepository.save(product);
+
+        /** Retrieve category and create a new product */
+        // var category = this.categoryRepository.findById(1L).orElseThrow();
+
+        // var product = Product.builder()
+        // .name("Sample Product")
+        // .price(19.99)
+        // .category(category)
+        // .build();
+
+        // this.productRepository.save(product);
+
+        /** Retrieve all products and add them to the user's favorites */
+        // var user = this.userRepository.findById(3L).orElseThrow();
+        // var products = this.productRepository.findAll();
+        // products.forEach(user::addFavoriteProduct);
+        // this.userRepository.save(user);
+
+        /** Retrieve a product and delete */
+        this.productRepository.deleteById(3L);
+    }
+}
