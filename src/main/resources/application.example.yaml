@@ -9,3 +9,8 @@ stripe:
   supported-currencies: USD,EUR,GBP
 
 payment: paypal
+
+# JPA / Hibernate settings (should be used only in dev mode or prototyping)
+jpa:
+  hibernate:
+    ddl-auto: create # options: none, validate, update, create, create-drop
