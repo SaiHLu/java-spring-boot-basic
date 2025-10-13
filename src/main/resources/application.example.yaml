@@ -1,16 +1,10 @@
 spring:
   application:
     name: store
-
-stripe:
-  api: https://api.stripe.com
-  enabled: true
-  timeout: 3000
-  supported-currencies: USD,EUR,GBP
-
-payment: paypal
-
-# JPA / Hibernate settings (should be used only in dev mode or prototyping)
-jpa:
-  hibernate:
-    ddl-auto: create # options: none, validate, update, create, create-drop
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        '[format_sql]': true
+  flyway:
+    enabled: false # Disable Flyway migrations on startup
