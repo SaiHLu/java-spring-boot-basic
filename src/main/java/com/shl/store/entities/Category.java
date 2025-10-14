@@ -26,6 +26,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Category {
+    public Category(Integer id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

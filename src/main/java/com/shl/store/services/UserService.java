@@ -1,5 +1,7 @@
 package com.shl.store.services;
 
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Service;
 
 import com.shl.store.entities.Address;
@@ -125,5 +127,30 @@ public class UserService {
 
         /** Retrieve a product and delete */
         this.productRepository.deleteById(3L);
+    }
+
+    @Transactional
+    public void updateProductPrices() {
+        this.productRepository.updatePriceByCategory(BigDecimal.valueOf(100), 1L);
+    }
+
+    public void fetchProducts() {
+        var products = this.productRepository.findByCategory(new Category(1));
+        products.forEach(System.out::println);
+    }
+
+    @Transactional
+    public void fetchUser() {
+        var user = this.userRepository.findByEmail("john.doe@example.com").orElseThrow();
+        System.out.println(user);
+    }
+
+    @Transactional
+    public void fetchUsers() {
+        var users = this.userRepository.findUsersWithAddresses();
+        users.forEach(u -> {
+            System.out.println(u);
+            u.getAddresses().forEach(System.out::println);
+        });
     }
 }

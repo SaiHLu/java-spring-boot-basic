@@ -31,7 +31,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder // using builder pattern to create objects
-@ToString
+// @ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,8 +76,8 @@ public class User {
         tag.getUsers().remove(this);
     }
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private Profile profile;
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    // private Profile profile;
 
     @ManyToMany
     @JoinTable(name = "wishlist", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
@@ -86,5 +86,14 @@ public class User {
 
     public void addFavoriteProduct(Product product) {
         this.favoriteProducts.add(product);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "email = " + email + ", " +
+                ")";
     }
 }

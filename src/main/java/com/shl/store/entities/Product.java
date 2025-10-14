@@ -40,6 +40,9 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne(cascade = { CascadeType.PERSIST })
     @JoinColumn(name = "category_id")
     private Category category;

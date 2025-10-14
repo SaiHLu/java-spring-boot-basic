@@ -19,6 +19,10 @@ public class StoreApplication {
         // userService.persistRelated();
         // userService.deleteRelated();
         // userService.deleteAddress();
-        userService.manageProducts();
+        // userService.manageProducts();
+        // userService.updateProductPrices();
+        // userService.fetchProducts();
+        // userService.fetchUser();
+        userService.fetchUsers();
     }
 }

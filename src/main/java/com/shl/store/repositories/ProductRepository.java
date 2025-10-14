@@ -3,8 +3,13 @@ package com.shl.store.repositories;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
+import com.shl.store.dtos.ProductSummary;
+import com.shl.store.entities.Category;
 import com.shl.store.entities.Product;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
@@ -49,4 +54,21 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findTop5ByNameOrderByPrice(String name);
 
     List<Product> findFirst5ByNameLikeIgnoreCaseOrderByPrice(String name);
+
+    // SQL or JPQL
+    // SQL
+    @Query(value = "select * from products p where p.price between :min and :max order by p.price", nativeQuery = true)
+    // JPQL
+    // @Query("select p from Product p where p.price between :min and :max order by
+    // p.price")
+    List<Product> findProducts(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
+
+    @Query(value = "select count(*) from products p where p.price between :min and :max", nativeQuery = true)
+    long countProducts(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
+
+    @Modifying
+    @Query("update Product p set p.price = :newPrice where p.category.id = :categoryId")
+    void updatePriceByCategory(@Param("newPrice") BigDecimal newPrice, @Param("categoryId") Long categoryId);
+
+    List<ProductSummary> findByCategory(Category category);
 }
