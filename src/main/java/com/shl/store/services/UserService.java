@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.shl.store.entities.Address;
@@ -15,6 +16,7 @@ import com.shl.store.repositories.CategoryRepository;
 import com.shl.store.repositories.ProductRepository;
 import com.shl.store.repositories.ProfileRepository;
 import com.shl.store.repositories.UserRepository;
+import com.shl.store.repositories.specifications.ProductSpec;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -158,6 +160,29 @@ public class UserService {
     public void fetchProductsByCriteria() {
         var products = this.productRepository.findProductsByCriteria("sample", BigDecimal.valueOf(1), null);
         products.forEach(System.out::println);
+    }
+
+    public void fetchProductsBySpecifications(String name, BigDecimal minPrice, BigDecimal maxPrice,
+            String categoryName) {
+        Specification<Product> spec = Specification.unrestricted();
+
+        if (name != null) {
+            spec = spec.and(ProductSpec.hasName(name));
+        }
+
+        if (minPrice != null) {
+            spec = spec.and(ProductSpec.hasPriceGreaterThanOrEqualTo(minPrice));
+        }
+
+        if (maxPrice != null) {
+            spec = spec.and(ProductSpec.hasPriceLessThanOrEqualTo(maxPrice));
+        }
+
+        if (categoryName != null) {
+            spec = spec.and(ProductSpec.hasCategoryName(categoryName));
+        }
+
+        this.productRepository.findAll(spec).forEach(System.out::println);
     }
 
     @Transactional
