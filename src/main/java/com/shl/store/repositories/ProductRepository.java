@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -57,11 +58,13 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     // SQL or JPQL
     // SQL
-    @Query(value = "select * from products p where p.price between :min and :max order by p.price", nativeQuery = true)
+    // @Query(value = "select * from products p where p.price between :min and :max
+    // order by p.price", nativeQuery = true)
     // JPQL
     // @Query("select p from Product p where p.price between :min and :max order by
     // p.price")
-    List<Product> findProducts(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
+    @Procedure("findProductsByPrice")
+    List<Product> findProducts(BigDecimal min, BigDecimal max);
 
     @Query(value = "select count(*) from products p where p.price between :min and :max", nativeQuery = true)
     long countProducts(@Param("min") BigDecimal min, @Param("max") BigDecimal max);

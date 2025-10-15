@@ -134,8 +134,10 @@ public class UserService {
         this.productRepository.updatePriceByCategory(BigDecimal.valueOf(100), 1L);
     }
 
+    @Transactional
     public void fetchProducts() {
-        var products = this.productRepository.findByCategory(new Category(1));
+        // var products = this.productRepository.findByCategory(new Category(1));
+        var products = this.productRepository.findProducts(BigDecimal.valueOf(0), BigDecimal.valueOf(100));
         products.forEach(System.out::println);
     }
 
@@ -151,6 +153,15 @@ public class UserService {
         users.forEach(u -> {
             System.out.println(u);
             u.getAddresses().forEach(System.out::println);
+        });
+    }
+
+    @Transactional
+    public void printLoyalProfiles() {
+        var profiles = this.userRepository.findLoyalUsers(49);
+        profiles.forEach(p -> {
+            System.out.println(p.getId());
+            System.out.println(p.getEmail());
         });
     }
 }

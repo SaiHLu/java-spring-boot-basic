@@ -23,6 +23,7 @@ public class StoreApplication {
         // userService.updateProductPrices();
         // userService.fetchProducts();
         // userService.fetchUser();
-        userService.fetchUsers();
+        // userService.fetchUsers();
+        userService.printLoyalProfiles();
     }
 }

@@ -76,8 +76,8 @@ public class User {
         tag.getUsers().remove(this);
     }
 
-    // @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-    // private Profile profile;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Profile profile;
 
     @ManyToMany
     @JoinTable(name = "wishlist", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
