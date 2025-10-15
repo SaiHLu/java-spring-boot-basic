@@ -21,9 +21,10 @@ public class StoreApplication {
         // userService.deleteAddress();
         // userService.manageProducts();
         // userService.updateProductPrices();
-        userService.fetchProducts();
+        // userService.fetchProducts();
         // userService.fetchUser();
         // userService.fetchUsers();
         // userService.printLoyalProfiles();
+        userService.fetchProductsByCriteria();
     }
 }

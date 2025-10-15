@@ -14,7 +14,7 @@ import com.shl.store.dtos.ProductSummary;
 import com.shl.store.entities.Category;
 import com.shl.store.entities.Product;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductCriteriaRepository {
     // String
     List<Product> findByName(String name);
 
