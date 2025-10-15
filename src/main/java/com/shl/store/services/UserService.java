@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -183,6 +186,26 @@ public class UserService {
         }
 
         this.productRepository.findAll(spec).forEach(System.out::println);
+    }
+
+    public void fetchSortedProducts() {
+        var sorts = Sort.by("name").and(
+                Sort.by("price").descending());
+
+        var products = this.productRepository.findAll(sorts);
+        products.forEach(System.out::println);
+    }
+
+    public void fetchPaginatedProducts(int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        Page<Product> page = this.productRepository.findAll(pageRequest);
+
+        var products = page.getContent();
+        products.forEach(System.out::println);
+
+        var totalPages = page.getTotalPages();
+        var totalItems = page.getTotalElements();
+        System.out.println("Total Pages: " + totalPages + "\nTotal Items: " + totalItems);
     }
 
     @Transactional

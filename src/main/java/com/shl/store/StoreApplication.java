@@ -26,6 +26,8 @@ public class StoreApplication {
         // userService.fetchUsers();
         // userService.printLoyalProfiles();
         // userService.fetchProductsByCriteria();
-        userService.fetchProductsBySpecifications("sample", null, null, null);
+        // userService.fetchProductsBySpecifications("sample", null, null, null);
+        // userService.fetchSortedProducts();
+        userService.fetchPaginatedProducts(0, 2);
     }
 }
