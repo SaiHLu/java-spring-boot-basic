@@ -2,6 +2,8 @@ package com.shl.store.services;
 
 import java.math.BigDecimal;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.shl.store.entities.Address;
@@ -137,7 +139,19 @@ public class UserService {
     @Transactional
     public void fetchProducts() {
         // var products = this.productRepository.findByCategory(new Category(1));
-        var products = this.productRepository.findProducts(BigDecimal.valueOf(0), BigDecimal.valueOf(100));
+        // var products = this.productRepository.findProducts(BigDecimal.valueOf(0),
+        // BigDecimal.valueOf(100));
+        // products.forEach(System.out::println);
+        var product = new Product();
+        product.setName("sample");
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+                .withIgnoreCase();
+
+        var example = Example.of(product, matcher);
+        var products = this.productRepository.findAll(example);
+
         products.forEach(System.out::println);
     }
 
